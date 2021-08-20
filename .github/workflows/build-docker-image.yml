@@ -1,0 +1,25 @@
+name: Build utility-image Image
+
+on:
+  push:
+    paths:
+      - '**'
+  schedule:
+    - cron: '5 0 */15 * *'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v1
+        with:
+          path: ./
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: thomas2500/utility-image
+          tags: latest
+          add_git_labels: true
